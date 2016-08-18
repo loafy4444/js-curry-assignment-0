@@ -29,7 +29,11 @@ const cart =
 const itemRepeater =
   itemName =>
     count => {
-      // TODO
+      const arr = []
+      for (let i = 0; i < count; i++) {
+        arr.push(itemName)
+      }
+      return arr
     }
 
 /**
@@ -38,9 +42,15 @@ const itemRepeater =
  */
 const constructCarts =
   listings =>
-    customers => {
-      // TODO
-    }
+    customers =>
+      customers
+        .map(customer => ({customer: customer.name, items:
+          entries(customer.shoppingList)
+            .reduce((key, arr) => [arr, ...key], [])
+            .reduce((cartArr, arr) => [...cartArr, ...itemRepeater(arr[0])(arr[1])], [])
+            .reduce((prev, item) => [...prev, ...listings
+              .filter(list => list.name === item)], [])
+          }))
 
 module.exports = {
   listing,
